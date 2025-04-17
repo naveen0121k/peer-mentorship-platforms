@@ -1,0 +1,103 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg p-5">
+        <h2 class="text-center text-primary mb-3">Welcome, {{ user.username }}! 👋</h2>
+        <p class="text-center text-muted">Here's your personalized mentorship dashboard.</p>
+
+        <!-- Notifications -->
+        {% if unseen_notifications %}
+        <div class="alert alert-info mt-4">
+            <h5 class="mb-2">🔔 New Notifications</h5>
+            <ul class="mb-0">
+                {% for notification in unseen_notifications %}
+                    <li>{{ notification.message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% else %}
+            <p class="text-center text-muted">No new notifications.</p>
+        {% endif %}
+
+        <div class="row mt-4">
+            <!-- Upcoming Sessions (Mentee) -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">📅 Upcoming Sessions</div>
+                    <div class="card-body">
+                        {% if upcoming_sessions %}
+                            <ul class="list-group">
+                                {% for session in upcoming_sessions %}
+                                    <li class="list-group-item">
+                                        <strong>With:</strong> {{ session.mentor.username }}<br>
+                                        <strong>Date:</strong> {{ session.scheduled_time|date:"M d, Y H:i" }}<br>
+                                        <strong>Topic:</strong> {{ session.topic }}<br>
+                                        <strong>Notes:</strong> {{ session.notes|default:"No notes" }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="text-muted">No sessions scheduled yet.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Mentorship Requests (Mentor) -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header bg-warning text-dark">📩 Mentorship Requests</div>
+                    <div class="card-body">
+                        {% if pending_requests %}
+                            <ul class="list-group">
+                                {% for request in pending_requests %}
+                                    <li class="list-group-item">
+                                        <strong>From:</strong> {{ request.mentee.username }}<br>
+                                        <strong>Status:</strong> {{ request.status|title }}<br>
+                                        <a href="{% url 'accept_request' request.id %}" class="btn btn-sm btn-success mt-2">✅ Accept</a>
+                                        <a href="{% url 'decline_request' request.id %}" class="btn btn-sm btn-danger mt-2">❌ Decline</a>
+                                        <a href="{% url 'schedule_session' request.id %}" class="btn btn-sm btn-primary mt-2">📅 Schedule</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="text-muted">No new mentorship requests.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sessions You Are Mentoring -->
+        {% if mentoring_sessions %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    <div class="card-header bg-info text-white">👨‍🏫 Mentoring Sessions</div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            {% for session in mentoring_sessions %}
+                                <li class="list-group-item">
+                                    <strong>Topic:</strong> {{ session.topic }}<br>
+                                    <strong>Date:</strong> {{ session.scheduled_time|date:"M d, Y H:i" }}<br>
+                                    <strong>Mentee:</strong> {{ session.mentee.username }}<br>
+                                    <strong>Notes:</strong> {{ session.notes|default:"No notes" }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Action Buttons -->
+        <div class="text-center mt-4">
+            <a href="{% url 'profile' %}" class="btn btn-outline-primary me-2">Edit Profile</a>
+            <a href="{% url 'send_request' %}" class="btn btn-outline-success me-2">Request Mentorship</a>
+            <a href="{% url 'logout' %}" class="btn btn-outline-danger">Logout</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

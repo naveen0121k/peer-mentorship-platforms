@@ -1,0 +1,74 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg p-4 rounded">
+        <h2 class="text-center text-primary mb-4">📩 Send Mentorship Request</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <!-- Mentor Selection -->
+            <div class="form-group mb-3">
+                <label for="mentor" class="form-label fw-bold">👨‍🏫 Select Mentor</label>
+                {{ form.mentor }}
+            </div>
+
+            <!-- Message Section -->
+            <div class="form-group mb-4">
+                <label for="message" class="form-label fw-bold">📝 Message</label>
+                {{ form.message }}
+            </div>
+
+            <!-- Submit Button -->
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-success btn-lg">Send Request</button>
+            </div>
+        </form>
+
+        <!-- Back to Dashboard Button -->
+        <div class="text-center mt-4">
+            <a href="{% url 'dashboard' %}" class="btn btn-secondary btn-lg">⬅️ Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Styling -->
+<style>
+    .container {
+        max-width: 700px;
+    }
+
+    .form-control {
+        font-size: 18px;
+        border-radius: 12px;
+        padding: 12px;
+    }
+
+    .btn-lg {
+        font-size: 18px;
+        border-radius: 10px;
+        padding: 12px;
+    }
+
+    .form-label {
+        font-size: 16px;
+    }
+
+    .form-control:focus {
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        border-color: #007bff;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+</style>
+
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg p-5 rounded-4">
+        <h2 class="text-center text-primary mb-4">👤 Edit Your Profile</h2>
+
+        <form method="POST" enctype="multipart/form-data" class="row g-4">
+            {% csrf_token %}
+
+            <!-- Profile Picture -->
+            <div class="col-12 text-center">
+                <label for="profile-picture-input" style="cursor: pointer;">
+                    <img src="{{ user.profile.profile_picture.url }}" 
+                         alt="Profile Picture" 
+                         class="rounded-circle shadow border border-3 border-primary" 
+                         width="150" height="150">
+                </label>
+                <input type="file" id="profile-picture-input" name="profile_picture" style="display: none;" onchange="previewImage(event)">
+                <p class="mt-2 fw-bold">@{{ user.username }}</p>
+            </div>
+
+            <!-- Bio -->
+            <div class="col-md-12">
+                <label class="form-label fw-semibold">📝 Bio</label>
+                <textarea class="form-control form-control-lg rounded-3 shadow-sm" name="bio" rows="2" placeholder="Write something about yourself...">{{ form.bio.value }}</textarea>
+            </div>
+
+            <!-- Skills -->
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">💡 Skills</label>
+                <input type="text" class="form-control form-control-lg rounded-3 shadow-sm" name="skills" value="{{ form.skills.value }}" placeholder="E.g., Python, ML">
+            </div>
+
+            <!-- Experience -->
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">🏆 Experience</label>
+                <textarea class="form-control form-control-lg rounded-3 shadow-sm" name="experience" rows="2" placeholder="Your experience...">{{ form.experience.value }}</textarea>
+            </div>
+
+            <!-- Interests -->
+            <div class="col-md-12">
+                <label class="form-label fw-semibold">🎯 Interests</label>
+                <input type="text" class="form-control form-control-lg rounded-3 shadow-sm" name="interests" value="{{ form.interests.value }}" placeholder="E.g., AI, Web Dev">
+            </div>
+
+            <!-- Submit Button -->
+            <div class="col-12 text-center mt-4">
+                <button type="submit" class="btn btn-success btn-lg px-4 rounded-3 shadow">💾 Save Profile</button>
+                <a href="{% url 'dashboard' %}" class="btn btn-secondary btn-lg px-4 rounded-3 shadow ms-2">← Dashboard</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Preview Script -->
+<script>
+    function previewImage(event) {
+        const reader = new FileReader();
+        reader.onload = function() {
+            const output = document.querySelector("label[for='profile-picture-input'] img");
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
+
+<!-- Styling -->
+<style>
+    .container {
+        max-width: 850px;
+    }
+    .form-control {
+        font-size: 17px;
+    }
+    textarea.form-control {
+        resize: vertical;
+    }
+    .btn {
+        font-size: 17px;
+    }
+    img.rounded-circle {
+        transition: 0.3s ease;
+    }
+    img.rounded-circle:hover {
+        transform: scale(1.05);
+    }
+</style>
+{% endblock %}

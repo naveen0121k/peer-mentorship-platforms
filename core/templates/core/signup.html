@@ -1,0 +1,42 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="height: 90vh;">
+    <div class="card p-4 text-dark shadow-lg" style="width: 500px;">
+        <h3 class="text-center text-primary animate__animated animate__fadeInDown">Sign Up</h3>
+        <form method="POST" class="mt-3">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">Username</label>
+                {{ form.username }}
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                {{ form.email }}
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Role</label>
+                {{ form.role }}
+            </div>
+            
+            <!-- Password and Confirm Password Fields in Separate Rows, Centered -->
+            <div class="d-flex flex-column align-items-center">
+                <div class="mb-3 w-75">
+                    <label class="form-label">Password</label>
+                    {{ form.password1 }}
+                </div>
+                <div class="mb-3 w-75">
+                    <label class="form-label">Confirm Password</label>
+                    {{ form.password2 }}
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+        </form>
+        <p class="text-center mt-3">Already have an account? 
+            <a href="{% url 'login' %}" class="text-primary">Log in</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
+
+

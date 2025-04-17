@@ -1,0 +1,19 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center mt-4">Notifications 🔔</h2>
+    <ul class="list-group mt-3">
+        {% for notification in notifications %}
+            <li class="list-group-item">
+                {{ notification.message }}
+                <span class="text-muted float-end">{{ notification.timestamp }}</span>
+            </li>
+        {% empty %}
+            <li class="list-group-item">No new notifications.</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'dashboard' %}" class="btn btn-primary mt-3">Back to Dashboard</a>
+</div>
+{% endblock %}
+
